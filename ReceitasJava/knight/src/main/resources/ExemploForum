@@ -1,0 +1,29 @@
+@Entity
+public class Livro implements Serializable {
+    
+    @Id @GeneratedValue
+    protected Long id;
+    protected String nome;
+// restante omitido
+
+Em xml o arquivo orm.xml seria assim:
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm    
+http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+    <description>Nome do aplicativo</description>
+    <package>pacote</package> 
+    <entity class="entity.Livro" name="Livro">        
+        <table name="Livro"/>
+        <attributes>
+            <id name="Id">
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="nome">
+            </basic>
+        </attributes>
+   </entity>
+</entity-mappings>

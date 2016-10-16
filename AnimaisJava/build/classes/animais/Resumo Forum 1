@@ -1,0 +1,184 @@
+// galinha implementa Bicho
+public class Galinha extends Ave {
+    
+    private Integer id;
+    private String nome;
+    
+    public Galinha() {};
+    
+    public Galinha(Integer i, String n) {
+        id = i;
+        nome = n;
+    }
+    
+    public Galinha(String v, String n, String g) {
+        super(v, n, g);
+    }
+    
+    @Override
+    public String grite() {
+        return getAtributos();
+    }
+    
+    @Override
+    public String toString() {
+        return getId() +": "+getNome();
+    }
+    
+    // Sets e Gets
+
+}
+
+// A classe abstrata
+public abstract class Ave implements Bicho {
+    
+    private String voa, nada, 
+            grito, atributos, nomeDaAve;
+    
+    public Ave() {};
+    
+    public Ave(String v, String n, String g) {
+        voa = v;
+        nada = n;
+        grito = g;
+        nomeDaAve = this.getClass().getName();
+        atributos = String.format("%s: Eu vôo? %s, nado? %s, Grito? %s", 
+                nomeDaAve, voa, nada, grito);
+    }
+
+    // Sets e Gets
+}
+
+// As galinhas
+public enum Galinhas {
+    
+    G1(1, "Galinha 1"),
+    G2(2, "Galinha 2"),
+    G3(3, "Galinha 3"),
+    G4(4, "Galinha 4");
+    
+    private Integer id;
+    private String nome;
+    
+    Galinhas( Integer id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
+    // Sets e Gets
+}
+
+// Os torturators
+public enum Torturators {
+    T1(1, "Torturator 1"),
+    T2(2, "Torturator 2"),
+    T3(3, "Torturator 3");
+    
+    private Integer id;
+    private String nome;
+    
+    Torturators(Integer i, String n) {
+        id = i;
+        nome = n;
+    }
+
+    // Sets e Gets
+}
+
+// O torturator
+public class Torturator {
+    
+    private Integer id;
+    private String nome;
+    
+    public Torturator() {}
+    
+    public Torturator(Integer i, String n) {
+        id = i;
+        nome = n;
+    }
+    
+    public String aperta(Bicho bicho) {
+        return bicho.grite();
+    }
+    
+    @Override
+    public String toString() {
+        return getId() +": "+getNome();
+    }
+
+    // Sets e Gets
+}
+
+// A classe de associação
+public class TorturatorPegaGalinha {
+    
+    private Date data;
+    private Torturator torturator;
+    private Galinha galinha;
+    
+    public TorturatorPegaGalinha() {}
+    
+    public TorturatorPegaGalinha(Date d, Torturator t, Galinha g) {
+        data = d;
+        torturator = t;
+        galinha = g;
+    }
+    
+    // Sets e gets
+}
+
+// imports
+// O teste acontece aqui
+public class AnimaisTeste {
+    // Eu não quero ter que instanciar a classe
+    // então o método é static
+    public static void testeTorturatorPegaGalinha() {
+        
+        Galinha galinha;
+        Torturator torturator;
+        Date data;
+
+        // essa é só pra formatar a saída da data
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+        // aqui está a classe de associação
+        TorturatorPegaGalinha tortura; 
+
+        // essa é a lista que conterá os registros da classe de associação
+        List<TorturatorPegaGalinha> torturas = new ArrayList<>(); 
+        
+        // Adicionando os dados
+        // Para cada tortutator vou adicionar todas as galinhas 
+        for(Torturators t : Torturators.values()) {
+            torturator = new Torturator(t.getId(),t.getNome());
+            for(Galinhas g : Galinhas.values()) {
+                // preencho os dados
+                galinha = new Galinha(g.getId(), g.getNome());
+                data = Calendar.getInstance().getTime();
+                tortura = 
+                    new TorturatorPegaGalinha(data, torturator, galinha);
+                // e acrescento na lista
+                torturas.add(tortura);
+            }
+        }
+        
+        // lendo os dados
+        // Títulos das colunas
+        System.out.printf("%s\t\t%s\t\t%s\n", "Data", "Torturator", "Galinha");
+        // para cada item em torturas imprima os dados desse item
+        for(TorturatorPegaGalinha t : torturas) {
+            System.out.printf("%s\t%s\t\t%s\n", 
+                    df.format(t.getData()), t.getTorturator(), t.getGalinha());
+        }
+    }
+}
+
+// A classe principal
+public class Animais {
+    
+    public static void main(String[] args) {
+        
+        AnimaisTeste.testeTorturatorPegaGalinha();
+    }
+}
